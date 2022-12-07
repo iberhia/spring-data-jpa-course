@@ -79,6 +79,14 @@ public class Application {
                     .selectStudentByFirstNameAndAgeGreaterEqualNativeNamedParams("maria", 21)
                     .forEach(System.out::println);
 
+            System.out.println("delete maria2");
+
+            System.out.println("student deleted count: " + studentRepository.deleteStudentById(51L));
+
+            studentRepository
+                    .selectStudentByFirstNameAndAgeGreaterEqualNativeNamedParams("maria", 21)
+                    .forEach(System.out::println);
+
         };
     }
 
