@@ -72,7 +72,11 @@ public class Application {
                     .forEach(System.out::println);
 
             studentRepository
-                    .selectStudentByFirstNameAndAgeGreaterEqual("maria", 21)
+                    .selectStudentByFirstNameAndAgeGreaterEqualNative("maria", 21)
+                    .forEach(System.out::println);
+
+            studentRepository
+                    .selectStudentByFirstNameAndAgeGreaterEqualNativeNamedParams("maria", 21)
                     .forEach(System.out::println);
 
         };
