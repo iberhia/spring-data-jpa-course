@@ -11,7 +11,7 @@ import javax.persistence.UniqueConstraint;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 //使用java
-@Entity(name = "Student")
+@Entity(name = "StudentEntityName")
 //自定义sequence generator：主键生成器，@Target({TYPE, METHOD, FIELD})
 @SequenceGenerator(
         //表示该表主键生成策略名称，它被引用在@GeneratedValue中设置的“gernerator”值中
