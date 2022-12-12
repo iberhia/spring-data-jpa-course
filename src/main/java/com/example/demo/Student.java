@@ -33,7 +33,6 @@ public class Student {
 
     //Primary Key
     @Id
-
     @GeneratedValue(
             strategy = SEQUENCE,
             //引用的generator

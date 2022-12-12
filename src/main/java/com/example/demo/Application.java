@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.util.List;
+import java.util.UUID;
 
 @SpringBootApplication
 public class Application {
@@ -19,17 +19,24 @@ public class Application {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
+    CommandLineRunner commandLineRunner(StudentRepository studentRepository,
+                                        StudentIdCardRepository studentIdCardRepository) {
+        Faker faker = new Faker();
         return args -> {
-            generateRandomStudents(studentRepository);
-            sorting(studentRepository);
-            PageRequest pageRequest = PageRequest.of(0,
-                    5,
-                    Sort.by("firstName").ascending()
-                            .and(Sort.by("age").descending()));
-            final Page<Student> studentPage = studentRepository.findAll(pageRequest);
-            System.out.println("studentPage:" + studentPage);
+            for (int i = 0; i < 100; i++) {
+                final StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID().toString().substring(0,15), fakeStudent(faker));
+                studentIdCardRepository.save(studentIdCard);
+            }
         };
+    }
+
+    private void paging(StudentRepository studentRepository) {
+        PageRequest pageRequest = PageRequest.of(0,
+                5,
+                Sort.by("firstName").ascending()
+                        .and(Sort.by("age").descending()));
+        final Page<Student> studentPage = studentRepository.findAll(pageRequest);
+        System.out.println("studentPage:" + studentPage);
     }
 
     private void sorting(StudentRepository studentRepository) {
@@ -43,15 +50,18 @@ public class Application {
                 .forEach(student -> System.out.println(student.getFirstName() + " " + student.getAge()));
     }
 
-    private void generateRandomStudents(StudentRepository studentRepository) {
-        Faker faker = new Faker();
+    private void generateRandomStudents(StudentRepository studentRepository, Faker faker) {
         for (int i = 0; i < 100; i++) {
-            final String firstName = faker.name().firstName();
-            final String lastName = faker.name().lastName();
-            final String email = String.format("%s.%s@amigoscode.edu", firstName, lastName);
-            final Student student = new Student(firstName, lastName, email, faker.number().numberBetween(0, 100));
+            final Student student = fakeStudent(faker);
             studentRepository.save(student);
         }
+    }
+
+    private Student fakeStudent(Faker faker) {
+        final String firstName = faker.name().firstName();
+        final String lastName = faker.name().lastName();
+        final String email = String.format("%s.%s@amigoscode.edu", firstName, lastName);
+        return new Student(firstName, lastName, email, faker.number().numberBetween(0, 100));
     }
 
 }
