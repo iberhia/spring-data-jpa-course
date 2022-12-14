@@ -29,6 +29,9 @@ public class Application {
             }
             studentIdCardRepository.findById(1L)
                     .ifPresent(System.out::println);
+
+            studentRepository.findById(50L)
+                    .ifPresent(System.out::println);
         };
     }
 

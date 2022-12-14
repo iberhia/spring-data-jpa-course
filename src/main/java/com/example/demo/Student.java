@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -70,6 +71,9 @@ public class Student {
     )
     private Integer age;
 
+    @OneToOne(mappedBy = "student")
+    private StudentIdCard studentIdCard;
+
     public Student(String firstName,
                    String lastName,
                    String email,
@@ -132,6 +136,9 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age +
+                ", studentIdCard=" + "{" +
+                "id=" + studentIdCard.getId() +
+                ", cardNumber='" + studentIdCard.getCardNumber() + '\'' +
                 '}';
     }
 }
