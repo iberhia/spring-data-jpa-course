@@ -27,6 +27,8 @@ public class Application {
                 final StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID().toString().substring(0,15), fakeStudent(faker));
                 studentIdCardRepository.save(studentIdCard);
             }
+            studentIdCardRepository.findById(1L)
+                    .ifPresent(System.out::println);
         };
     }
 
