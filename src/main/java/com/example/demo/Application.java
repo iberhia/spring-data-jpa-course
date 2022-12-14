@@ -23,7 +23,7 @@ public class Application {
                                         StudentIdCardRepository studentIdCardRepository) {
         Faker faker = new Faker();
         return args -> {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 1; i++) {
                 final StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID().toString().substring(0,15), fakeStudent(faker));
                 studentIdCardRepository.save(studentIdCard);
             }
@@ -32,6 +32,15 @@ public class Application {
 
             studentRepository.findById(50L)
                     .ifPresent(System.out::println);
+
+//            studentRepository.deleteById(50L);
+            studentIdCardRepository.deleteById(1L);
+
+            studentIdCardRepository.findById(1L)
+                    .ifPresentOrElse(System.out::println,()-> System.out.println("\n\nstudent ID card not found!!!"));
+            studentRepository.findById(50L)
+                    .ifPresentOrElse(e -> System.out.println("Student = " + e.getId()), () -> System.out.println("\n\nstudent not found!!!"));
+
         };
     }
 

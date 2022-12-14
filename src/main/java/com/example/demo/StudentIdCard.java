@@ -49,7 +49,7 @@ public class StudentIdCard {
     )
     private String cardNumber;
 
-    @OneToOne(cascade = CascadeType.ALL,
+    @OneToOne(cascade = {CascadeType.ALL},
             fetch = FetchType.EAGER)
     @JoinColumn(
             name = "student_id",
