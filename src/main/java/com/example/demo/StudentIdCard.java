@@ -89,12 +89,16 @@ public class StudentIdCard {
         this.cardNumber = cardNumber;
     }
 
+    public Student getStudent() {
+        return student;
+    }
+
     @Override
     public String toString() {
         return "StudentIdCard{" +
                 "id=" + id +
                 ", cardNumber='" + cardNumber + '\'' +
-                ", student=" + student +
+                ", studentId=" + student.getId() +
                 '}';
     }
 }

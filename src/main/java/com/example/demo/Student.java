@@ -1,13 +1,19 @@
 package com.example.demo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -74,6 +80,14 @@ public class Student {
     @OneToOne(mappedBy = "student",orphanRemoval = true)
     private StudentIdCard studentIdCard;
 
+    @OneToMany(
+            mappedBy = "studentBookFK",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Book> books = new ArrayList<>();
+
     public Student(String firstName,
                    String lastName,
                    String email,
@@ -128,6 +142,28 @@ public class Student {
         this.age = age;
     }
 
+    public void addBook(Book book) {
+        if (!books.contains(book)) {
+            books.add(book);
+            book.setStudentBookFK(this);
+        }
+    }
+
+    public void removeBook(Book book) {
+        if (books.contains(book)) {
+            books.remove(book);
+            book.setStudentBookFK(null);
+        }
+    }
+
+    public void setStudentIdCard(StudentIdCard studentIdCard) {
+        this.studentIdCard = studentIdCard;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -135,10 +171,7 @@ public class Student {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", age=" + age +
-                ", studentIdCard=" + "{" +
-                "id=" + studentIdCard.getId() +
-                ", cardNumber='" + studentIdCard.getCardNumber() + '\'' +
+                ", age=" + age + '\'' +
                 '}';
     }
 }
