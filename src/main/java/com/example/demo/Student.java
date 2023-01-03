@@ -4,8 +4,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -87,9 +91,15 @@ public class Student {
             mappedBy = "studentBookFK",
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Book> books = new ArrayList<>();
+
+    @OneToMany(
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            mappedBy = "student"
+    )
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public Student(String firstName,
                    String lastName,
@@ -165,6 +175,24 @@ public class Student {
 
     public List<Book> getBooks() {
         return books;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
+    public void addEnrollment(Enrollment enrollment) {
+        if (!enrollments.contains(enrollment)) {
+            enrollments.add(enrollment);
+        }
+    }
+
+    public void removeEnrollment(Enrollment enrollment) {
+        enrollments.remove(enrollment);
     }
 
     @Override

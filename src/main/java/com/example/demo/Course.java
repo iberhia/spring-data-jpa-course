@@ -1,11 +1,18 @@
 package com.example.demo;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -26,7 +33,7 @@ public class Course {
             name = "id",
             updatable = false
     )
-    private int id;
+    private Long id;
 
     @Column(
             name = "name",
@@ -40,6 +47,12 @@ public class Course {
     )
     private String department;
 
+    @OneToMany(
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            mappedBy = "course"
+    )
+    private List<Enrollment> enrollments = new ArrayList<>();
+
     public Course() {
     }
 
@@ -48,11 +61,11 @@ public class Course {
         this.department = department;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -70,6 +83,24 @@ public class Course {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
+    public void addEnrollment(Enrollment enrollment) {
+        if (!enrollments.contains(enrollment)) {
+            enrollments.add(enrollment);
+        }
+    }
+
+    public void removeEnrollment(Enrollment enrollment) {
+        enrollments.remove(enrollment);
     }
 
     @Override
