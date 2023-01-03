@@ -29,35 +29,34 @@ public class Application {
     CommandLineRunner commandLineRunner(StudentRepository studentRepository,
                                         StudentIdCardRepository studentIdCardRepository) {
         Faker faker = new Faker();
-        return new CommandLineRunner() {
-            @Override
-            public void run(String... args) throws Exception {
-                for (int i = 0; i < 1; i++) {
-                    Student student = Application.this.fakeStudent(faker);
-                    final StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID().toString().substring(0, 15), student);
-                    student.addBook(new Book("Clean Code", LocalDateTime.now().minusDays(4)));
-                    student.addBook(new Book("DDD Principle", LocalDateTime.now().minusYears(4)));
-                    student.addBook(new Book("Mysql Pro", LocalDateTime.now().minusMonths(4)));
-                    studentIdCardRepository.save(studentIdCard);
-                    studentRepository.findById(50L)
-                            .ifPresent(s -> {
-                                System.out.println(s);
-                                System.out.println(s.getBooks());
-                            });
-                }
+        return args -> {
+            for (int i = 0; i < 1; i++) {
+                Student student = Application.this.fakeStudent(faker);
+                final StudentIdCard studentIdCard = new StudentIdCard(UUID.randomUUID().toString().substring(0, 15), student);
+                student.addBook(new Book("Clean Code", LocalDateTime.now().minusDays(4)));
+                student.addBook(new Book("DDD Principle", LocalDateTime.now().minusYears(4)));
+                student.addBook(new Book("Mysql Pro", LocalDateTime.now().minusMonths(4)));
+                student.setStudentIdCard(studentIdCard);
+                studentRepository.save(student);
+                //                    studentIdCardRepository.save(studentIdCard);
+                studentRepository.findById(50L)
+                        .ifPresent(s -> {
+                            System.out.println(s);
+                            System.out.println(s.getBooks());
+                        });
+            }
 
 
-                studentIdCardRepository.findById(1L)
-                        .ifPresent(System.out::println);
+            studentIdCardRepository.findById(1L)
+                    .ifPresent(System.out::println);
 
-                studentRepository.deleteById(50L);
+            studentRepository.deleteById(50L);
 //            studentIdCardRepository.deleteById(1L);
 //
 //            studentIdCardRepository.findById(1L)
 //                    .ifPresentOrElse(System.out::println,()-> System.out.println("\n\nstudent ID card not found!!!"));
 //            studentRepository.findById(50L)
 //                    .ifPresentOrElse(e -> System.out.println("Student = " + e.getId()), () -> System.out.println("\n\nstudent not found!!!"));
-            }
         };
     }
 

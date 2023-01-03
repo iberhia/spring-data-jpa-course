@@ -77,14 +77,17 @@ public class Student {
     )
     private Integer age;
 
-    @OneToOne(mappedBy = "student",orphanRemoval = true)
+    @OneToOne(mappedBy = "student",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
     private StudentIdCard studentIdCard;
 
     @OneToMany(
             mappedBy = "studentBookFK",
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<Book> books = new ArrayList<>();
 
