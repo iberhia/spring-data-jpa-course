@@ -1,11 +1,14 @@
 package com.example.demo;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity(name = "Enrollment")
 @Table(name = "enrollment")
@@ -16,26 +19,41 @@ public class Enrollment {
 
     @ManyToOne
     @MapsId("studentId")
-    @JoinColumn(name = "student_id")
+    @JoinColumn(
+            name = "student_id",
+            foreignKey = @ForeignKey(name = "enrollment_student_id_fk")
+    )
     private Student student;
 
     @ManyToOne
     @MapsId("courseId")
-    @JoinColumn(name = "course_id")
+    @JoinColumn(
+            name = "course_id",
+            foreignKey = @ForeignKey(name = "enrollment_course_id_fk")
+    )
     private Course course;
 
+    @Column(name = "created_at",
+            nullable = false,
+            columnDefinition = "TIMESTAMP"
+    )
+    private LocalDateTime createdAt;
+
     public Enrollment() {
+
     }
 
-    public Enrollment(Student student, Course course) {
+    public Enrollment(Student student, Course course, LocalDateTime createdAt) {
         this.student = student;
         this.course = course;
+        this.createdAt = createdAt;
     }
 
-    public Enrollment(EnrollmentId id, Student student, Course course) {
+    public Enrollment(EnrollmentId id, Student student, Course course, LocalDateTime createdAt) {
         this.id = id;
         this.student = student;
         this.course = course;
+        this.createdAt = createdAt;
     }
 
     public EnrollmentId getId() {
@@ -60,5 +78,13 @@ public class Enrollment {
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

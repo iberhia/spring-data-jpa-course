@@ -36,8 +36,15 @@ public class Application {
                     student.addBook(new Book("Mysql Pro", LocalDateTime.now().minusMonths(4)));
                     student.setStudentIdCard(studentIdCard);
 
-                    student.addEnrollment(new Enrollment(new EnrollmentId(1L, 1L), student, new Course("Computer Science", "IT")));
-                    student.addEnrollment(new Enrollment(new EnrollmentId(1L, 1L), student, new Course("Amigo's Code Spring Data JPA", "IT")));
+                    student.addEnrollment(new Enrollment(new EnrollmentId(1L,
+                            1L),
+                            student,
+                            new Course("Computer Science", "IT") ,
+                            LocalDateTime.now()));
+                    student.addEnrollment(new Enrollment(new EnrollmentId(1L, 1L),
+                            student,
+                            new Course("Amigo's Code Spring Data JPA", "IT"),
+                            LocalDateTime.now()));
 //                    student.enrollToCourse(new Course("Computer Science", "IT"));
 //                    student.enrollToCourse(new Course("Amigo's Code Spring Data JPA", "IT"));
                     studentRepository.save(student);
