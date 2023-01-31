@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -35,11 +36,10 @@ public class Application {
                     student.addBook(new Book("DDD Principle", LocalDateTime.now().minusYears(4)));
                     student.addBook(new Book("Mysql Pro", LocalDateTime.now().minusMonths(4)));
                     student.setStudentIdCard(studentIdCard);
-
                     student.addEnrollment(new Enrollment(new EnrollmentId(1L,
                             1L),
                             student,
-                            new Course("Computer Science", "IT") ,
+                            new Course("Computer Science", "IT"),
                             LocalDateTime.now()));
                     student.addEnrollment(new Enrollment(new EnrollmentId(1L, 1L),
                             student,
@@ -54,6 +54,9 @@ public class Application {
                                 System.out.println(s);
                                 System.out.println("书：" + s.getBooks());
                             });
+                    final List<Student> studentByFirstNameEqualsAndAgeEquals = studentRepository.findStudentByFirstNameEqualsAndAgeEquals(student.getFirstName(), student.getAge());
+                    System.out.println(studentByFirstNameEqualsAndAgeEquals);
+
                 }
 
 
